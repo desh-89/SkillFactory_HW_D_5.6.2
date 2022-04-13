@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_filters',
     'News',
+    'accounts',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
 
 ROOT_URLCONF = 'NewsPortal.urls'
@@ -59,7 +65,7 @@ ROOT_URLCONF = 'NewsPortal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'News/templates/News')],
+        'DIRS': [os.path.join(BASE_DIR, 'NewsPortal/templates/NewsPortal')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,6 +80,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'NewsPortal.wsgi.application'
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_FORMS = {
+    'login': 'allauth.account.forms.LoginForm',
+    'signup': 'allauth.account.forms.SignupForm',
+    'add_email': 'allauth.account.forms.AddEmailForm',
+    'change_password': 'allauth.account.forms.ChangePasswordForm',
+    'set_password': 'allauth.account.forms.SetPasswordForm',
+    'reset_password': 'allauth.account.forms.ResetPasswordForm',
+    'reset_password_from_key': 'allauth.account.forms.ResetPasswordKeyForm',
+    'disconnect': 'allauth.socialaccount.forms.DisconnectForm',
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -131,3 +159,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
+
+LOGIN_URL = '/account/login/'
+LOGIN_REDIRECT_URL = '/'

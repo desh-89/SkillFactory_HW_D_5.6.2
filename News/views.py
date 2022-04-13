@@ -81,3 +81,4 @@ class PostDelete(DeleteView):
     queryset = Post.objects.all()
     context_object_name = 'new'
     success_url = '/news/'
+    
